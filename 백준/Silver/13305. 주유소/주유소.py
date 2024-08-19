@@ -8,11 +8,12 @@ L_price=list(map(int,sys.stdin.readline().split()))
 min=L_price[0]*city_sum
 check=L_price[0]
 for i in range(1,N-1):
-    if L_price[1]<check:
-        city_sum-=city_len[0]
+    if L_price[i]<check:
+        city_sum-=city_len[i-1]
         min-=check*city_sum
         check=L_price[i]
         min+=check*city_sum
     else:
+        city_sum -= city_len[i-1]
         pass
 print(min)

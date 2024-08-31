@@ -1,36 +1,22 @@
 import sys
-from collections import defaultdict
-from collections import  deque
-
-N, M, R = map(int, sys.stdin.readline().split())
-answer = [0]*N
-visited = [False]*N
-visited_node = deque([R])
-graph = defaultdict(list)
-cnt = 1
-
-def DFS(V, graph, R):
-    global cnt
-    if visited[V-1] == False:
-        visited[V-1] = True
-        answer[V-1] = cnt
-        cnt += 1
-
-        visited_node.extendleft(sorted(graph[V], reverse= True))
-        if visited_node:
-            V = visited_node.popleft()
-        else:
-            pass
-        DFS(V,graph, R)
-        
-for _ in range(M):
-    E1, E2 = map(int, sys.stdin.readline().split())
-    graph[E1].append(E2)
-    graph[E2].append(E1)
-
-while visited_node:
-    V = visited_node.popleft()
-    DFS(V, graph, visited)
-
-answer = list(map(str, answer))
-print('\n'.join(answer))
+sys.setrecursionlimit(10**5)
+N,M,R=map(int,sys.stdin.readline().split())
+graph=[[] for _ in range(N+1)]
+visited=[0]*(N+1)
+n=1
+def DFS(g,r,v):
+    global n
+    v[r]=n
+    for i in g[r]:
+        if v[i]==0:
+            n+=1
+            DFS(g,i,v)
+for m in range(M):
+    p1, p2 =map(int,sys.stdin.readline().split())
+    graph[p1].append(p2)
+    graph[p2].append(p1)
+for i in range(N+1):
+    graph[i].sort()
+DFS(graph,R,visited)
+for i in range(1,N+1):
+    print(visited[i])

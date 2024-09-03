@@ -6,27 +6,32 @@ for i in range(N):
     arr += [list(map(int, sys.stdin.readline().rstrip()))]
 dx=[1,-1,0,0]
 dy=[0,0,1,-1]
-num=0
 result=[]
 
-def DFS(x,y):
-    global num
-    if x<0 or x>=N or y<0 or y>=N:
-        return
-    if arr[x][y]==1:
+def BFS(x,y):
+    queue=deque([[x,y]])
+    arr[x][y]=0
+    num=1
+    while queue:
+        x,y=queue.popleft()
         arr[x][y]=0
-        num+=1
         for i in range(4):
             x2=x+dx[i]
             y2=y+dy[i]
-            DFS(x2,y2)
+            if x2<0 or x2>=N or y2<0 or y2>=N:
+                continue
+            if arr[x2][y2]==1:
+                arr[x2][y2]=0
+                queue.append([x2,y2])
+                num+=1
+    return num
 
 for x in range(N):
     for y in range(N):
         if arr[x][y]==1:
-            DFS(x,y)
-            result.append(num)
-            num=0
+            n=BFS(x,y)
+            result.append(n)
+
 print(len(result))
 result.sort()
 for i in range(len(result)):

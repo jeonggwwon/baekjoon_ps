@@ -9,12 +9,10 @@ for i in range(T):
         table[y][x]=1
     dx=[1,-1,0,0]
     dy=[0,0,1,-1]
-    result=[]
 
     def BFS(y,x):
         queue=deque([[y,x]])
         table[y][x]=0
-        num=1
         while queue:
             y,x=queue.popleft()
             table[y][x]=0
@@ -26,13 +24,12 @@ for i in range(T):
                 if table[y2][x2]==1:
                     table[y2][x2]=0
                     queue.append([y2,x2])
-                    num+=1
-        return num
-
+        return
+    num=0
     for y in range(N):
         for x in range(M):
             if table[y][x]==1:
                 n=BFS(y,x)
-                result.append(n)
+                num+=1
 
-    print(len(result))
+    print(num)

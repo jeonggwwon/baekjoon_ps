@@ -1,26 +1,25 @@
 import sys
-sys.setrecursionlimit(21000)
+sys.setrecursionlimit(10**6)
 K=int(sys.stdin.readline())
 
-def DFS(start):
-    global binary
+def DFS(start, mark):
+    visited[start]=mark
     for next in graph[start]:
         if visited[next]==0:
-            if visited[start]==1:
-                visited[next]=-1
+            if DFS(next,-mark):
+                pass
             else:
-                visited[next]=1
-            DFS(next)
+                return 0
         elif visited[next]==visited[start]:
-            binary=0
-            return
-
+            return 0
+    return 1
 
 for k in range(K):
     V, E = map(int, sys.stdin.readline().split())
-    graph = [[] for _ in range(V+1)]
-    visited = [0]*(V+1)
+    graph=[[] for _ in range(V+1)]
+    visited=[0]*(V+1)
     binary=1
+
     for e in range(E):
         p1, p2 = map(int, sys.stdin.readline().split())
         graph[p1].append(p2)
@@ -28,10 +27,10 @@ for k in range(K):
 
     for v in range(1,V+1):
         if visited[v]==0:
-            visited[v]=1
-            DFS(v)
+            binary=DFS(v,1)
             if binary==0:
                 break
+
     if binary:
         print('YES')
     else:
